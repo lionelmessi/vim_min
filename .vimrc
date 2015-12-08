@@ -43,9 +43,18 @@ autocmd! bufwritepost .vimrc source ~/.vimrc
 syntax on		" syntax highlight
 set hlsearch		" search highlighting
 
+
+
 if has("gui_running")	" GUI color and font settings
  " set guifont=Osaka-Mono:h11
-  set guifont=Lucida_Console:h11
+	if has("gui_gtk2")
+		set guifont=Lucida\ Console\ 11
+	elseif has("gui_macvim")
+    	set guifont=Consolas:h12
+	elseif has("gui_win32")
+    	set guifont=Consolas:h11
+	end
+
   set background=dark 
   set t_Co=256          " 256 color mode
   set cursorline        " highlight current line
@@ -55,6 +64,7 @@ else
 " terminal color settings
   colors vgod
 endif
+
 
 set clipboard=unnamed	" yank to the system register (*) by default
 set showmatch		" Cursor shows matching ) and }
@@ -339,6 +349,22 @@ set ttimeout
 set ttimeoutlen=20
 set notimeout
 
+
+function! NumberToggle()
+  if(&relativenumber == 1)
+    set nornu
+  else
+    set rnu
+  endif
+endfunc
+
+nnoremap <F8> :call NumberToggle()<cr>
+
+:au FocusLost * :set nornu
+:au FocusGained * :set rnu
+
+
+
 "--------------------------------------------------------------------------- 
 " ENCODING SETTINGS
 "--------------------------------------------------------------------------- 
@@ -419,6 +445,7 @@ hi link EasyMotionShade  Comment
 " --- TagBar
 " toggle TagBar with F7
 nnoremap <silent> <F10> :TagbarToggle<CR> 
+
 " set focus to TagBar when opening it
 let g:tagbar_autofocus = 1
 
@@ -442,6 +469,8 @@ au BufNewFile,BufRead *.ejs set filetype=html
 " ---CTRLP Plugin
 let g:ctrlp_clear_cache_on_exit = 0
 let g:ctrlp_working_path_mode = '0'
+
+nnoremap <c-\> :CtrlP<CR>
 
 ""if exists("g:ctrl_user_command")
 "  unlet g:ctrlp_user_command
@@ -473,3 +502,24 @@ let g:snippetsEmu_key = "<S-Tab>"
 
 " --- Airline
 let g:airline_powerline_fonts = 1
+
+
+" --- Yankring
+" Some settings to try to get yank ring to not mess with default vim
+" functionality so much.
+let g:yankring_manage_numbered_reg = 0
+let g:yankring_clipboard_monitor = 0
+let g:yankring_paste_check_default_buffer = 0
+
+" Don't let yankring use f, t, /. It doesn't record them properly in macros
+" and that's my most common use. Yankring also blocks macros of macros (it
+" prompts for the macro register), but removing @ doesn't fix that :(
+let g:yankring_zap_keys = ''
+
+" Disable yankring for regular p/P. This preserves vim's normal behavior, but
+" I can still use C-p/C-n to cycle through yankring.
+let g:yankring_paste_n_bkey = ''
+let g:yankring_paste_n_akey = ''
+let g:yankring_paste_v_key = ''
+let g:yankring_paste_v_bkey = ''
+let g:yankring_paste_v_akey = ''
