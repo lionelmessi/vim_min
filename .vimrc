@@ -503,7 +503,6 @@ let g:snippetsEmu_key = "<S-Tab>"
 " --- Airline
 let g:airline_powerline_fonts = 1
 
-
 " --- Yankring
 " Some settings to try to get yank ring to not mess with default vim
 " functionality so much.
