@@ -14,13 +14,11 @@ die() {
 [ -e "~/.vim" ] && die "~/.vim already exists."
 [ -e "~/.vimrc" ] && die "~/.vimrc already exists."
 
-git clone git://github.com/vgod/vimrc.git "$VIMHOME"
+git clone git@github.com:lionelmessi/vim_min.git "$VIMHOME"
 cd "$VIMHOME"
-git submodule update --init
+git submodule update --init --recursive
 
-./install-vimrc.sh
 
-cd bundle/command-t/ruby/command-t
-(ruby extconf.rb && make) || warn "Can't compile Command-T."
+./install_vimrc_unix.sh
 
-echo "vgod's vimrc is installed."
+echo "RV's vimrc is installed."

@@ -43,9 +43,18 @@ autocmd! bufwritepost .vimrc source ~/.vimrc
 syntax on		" syntax highlight
 set hlsearch		" search highlighting
 
+
+
 if has("gui_running")	" GUI color and font settings
  " set guifont=Osaka-Mono:h11
-  set guifont=Lucida_Console:h11
+	if has("gui_gtk2")
+		set guifont=Lucida\ Console\ 11
+	elseif has("gui_macvim")
+    	set guifont=Consolas:h12
+	elseif has("gui_win32")
+    	set guifont=Consolas:h11
+	end
+
   set background=dark 
   set t_Co=256          " 256 color mode
   set cursorline        " highlight current line
@@ -55,6 +64,7 @@ else
 " terminal color settings
   colors vgod
 endif
+
 
 set clipboard=unnamed	" yank to the system register (*) by default
 set showmatch		" Cursor shows matching ) and }
